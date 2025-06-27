@@ -59,6 +59,7 @@ window.addEventListener(
         if (!ptnNinjaHasLoaded) {
             if (event.data.action === "GAME_STATE") {
                 ptnNinjaHasLoaded = true;
+                console.log("ptn.ninja loaded, tps:", tps);
             } else {
                 return; // Ignore other messages until ptn.ninja is fully loaded
             }
@@ -69,10 +70,8 @@ window.addEventListener(
             tps = gameState.tps;
 
             document.getElementById('tpsInput').value = tps;
+
             const n = positionGenerator.encode(tps, 6);
-
-            console.log("ptn.ninja loaded, tps:", tps);
-
             document.getElementById('numberInput').value = n;
         } else {
             return; // Ignore other messages until ptn.ninja is fully loaded
