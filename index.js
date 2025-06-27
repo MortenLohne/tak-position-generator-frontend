@@ -41,7 +41,6 @@ async function initPositionGen() {
 const setRandomPosition = () => {
     const max_number = positionGenerator.numLegalPositions(6);
     const n = randomBigInt(max_number);
-    console.log("Random n:", n.toString());
     document.getElementById('numberInput').value = n.toString();
     const newTps = positionGenerator.decode(n, 6);
     numberInput.classList.remove("input-error");
@@ -73,7 +72,6 @@ window.addEventListener(
             const n = positionGenerator.encode(tps, 6);
 
             console.log("ptn.ninja loaded, tps:", tps);
-            console.log(`n=${n}`);
 
             document.getElementById('numberInput').value = n;
         } else {
@@ -87,7 +85,6 @@ window.addEventListener(
 const setNewTps = newTps => {
     tps = newTps;
     document.getElementById('tpsInput').value = newTps;
-    console.log("New TPS set:", tps);
 
     const ninja = document.getElementById("ninja");
     const newPtn = `[TPS "${tps}"]`;
@@ -129,7 +126,6 @@ numberInput.addEventListener(
             numberInput.classList.add("input-error");
             return;
         }
-        console.log("Number input changed:", n.toString());
         let maxN = positionGenerator.numLegalPositions(6);
         if (n < 0 || n >= maxN) {
             console.warn(`Number input out of range [0, ${maxN})`);
