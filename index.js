@@ -48,7 +48,7 @@ const setRandomPosition = () => {
     setNewTps(newTps);
 }
 
-initPositionGen().then(setRandomPosition)
+initPositionGen()
 
 window.addEventListener(
     "message",
@@ -68,6 +68,8 @@ window.addEventListener(
         if (event.data.action === "GAME_STATE") {
             const gameState = event.data.value;
             tps = gameState.tps;
+
+            document.getElementById('tpsInput').value = tps;
             const n = positionGenerator.encode(tps, 6);
 
             console.log("ptn.ninja loaded, tps:", tps);
@@ -81,6 +83,7 @@ window.addEventListener(
     false
 );
 
+// Set a new TPS, and display it in the ptn.ninja iframe
 const setNewTps = newTps => {
     tps = newTps;
     document.getElementById('tpsInput').value = newTps;
