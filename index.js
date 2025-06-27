@@ -21,7 +21,7 @@ function randomBigInt(max) {
 // will "boot" the module and make it ready to use. Currently browsers
 // don't support natively imported WebAssembly as an ES module, but
 // eventually the manual initialization won't be required!
-import init, { PositionGenerator } from './wasm-position-generator/pkg/wasm_position_generator.js';
+import init, { PositionGenerator, tpsIsLegal } from './wasm-position-generator/pkg/wasm_position_generator.js';
 
 let ptnNinjaHasLoaded = false;
 let tps = "x6/x6/x6/x6/x6/x6 1 1";
@@ -69,10 +69,15 @@ window.addEventListener(
             const gameState = event.data.value;
             tps = gameState.tps;
 
-            document.getElementById('tpsInput').value = tps;
+            const tpsInput = document.getElementById('tpsInput')
+            tpsInput.value = tps;
+            tpsInput.classList.remove("input-error");
 
             const n = positionGenerator.encode(tps, 6);
-            document.getElementById('numberInput').value = n;
+
+            const numberInput = document.getElementById('numberInput')
+            numberInput.value = n;
+            numberInput.classList.remove("input-error");
         } else {
             return; // Ignore other messages until ptn.ninja is fully loaded
         }
@@ -134,6 +139,28 @@ numberInput.addEventListener(
         numberInput.classList.remove("input-error");
         const newTps = positionGenerator.decode(n, 6);
         setNewTps(newTps);
+    },
+    true
+);
+
+const tpsInput = document.getElementById("tpsInput");
+
+tpsInput.addEventListener(
+    "input",
+    (event) => {
+        const newTps = event.target.value.trim();
+        if (!tpsIsLegal(newTps, 6)) {
+            console.warn("Invalid TPS input:", newTps);
+            tpsInput.classList.add("input-error");
+            return;
+        }
+        tps = newTps;
+
+        // Update PTN Ninja embed
+        // This will trigger a message, which will recompute the number field
+        const ninja = document.getElementById("ninja");
+        const newPtn = `[TPS "${tps}"]`;
+        ninja.contentWindow.postMessage({ action: "SET_CURRENT_PTN", value: newPtn }, "*");
     },
     true
 );

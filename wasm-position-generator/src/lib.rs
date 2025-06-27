@@ -66,6 +66,14 @@ impl PositionGenerator {
     }
 }
 
+#[wasm_bindgen(js_name = tpsIsLegal)]
+pub fn tps_is_legal(tps: &str, size: usize) -> bool {
+    match size {
+        6 => <Position<6>>::from_fen(tps).is_ok(),
+        _ => panic!("Unsupported size: {}", size),
+    }
+}
+
 fn encode_tps<const S: usize>(encoder: &PositionEncoder<S>, tps: &str) -> num_bigint::BigUint {
     let position: Position<S> = Position::from_fen(&tps).unwrap();
     encoder.encode(&position)
