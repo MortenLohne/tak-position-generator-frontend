@@ -1,5 +1,4 @@
 node_modules
 wasm-position-generator/target
-wasm-position-generator/Cargo.lock
 wasm-position-generator/pkg/
 wasm-position-generator/wasm-pack.log
